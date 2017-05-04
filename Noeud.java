@@ -9,13 +9,66 @@ public class Noeud {
 	this.freq = freq;
     }
 
-
     public Noeud(int freq, Noeud g, Noeud d){
 	this.freq = freq;
 	this.fgauche = g;
 	this.fdroit = d;
     }
 
+    public void afficheInfixe(){
+	if(this.fgauche != null){
+	    this.fgauche.afficheInfixe();
+	}
+	System.out.print(this.c + " ");
+	if(this.fdroit != null)
+	    this.fdroit.afficheInfixe();
+    }
+  
+    public Noeud maxInf(Noeud ref){
+	if(this.fgauche != null){
+	    System.out.println("Test FG : " +this.getFreq());
+	    if(this.getFreq() < ref.getFreq()){
+		System.out.println("lllllll");
+		return((this.getFreq() < this.fgauche.maxInf(ref).getFreq())?this.fgauche:this);
+	    }else{
+		return (this.fgauche.maxInf(ref));
+	    }
+	    
+	}
+	if(this.fdroit != null){
+	    System.out.println("Test FD : " +this.getFreq());
+	    if(this.getFreq() < ref.getFreq()){
+		System.out.println("kkkkkkk");
+		return((this.getFreq() < this.fdroit.maxInf(ref) .getFreq())?this.fdroit:this);
+	    }else{
+		return this.fdroit.maxInf(ref);
+	    }
+	    
+	}
+	return this;
+    }
+    /*public Noeud maxInf(Noeud racine, Noeud tmp){
+	//Noeud res = null;
+       	if(racine.getFreq() < tmp.getFreq()){
+	    return racine;
+	    }
+	
+	if(racine.fgauche != null){
+	    //if(racine.fgauche.getFreq() < tmp.getFreq() ){
+	    return racine.fgauche.maxInf(racine.fgauche,tmp);
+		//}
+	}
+	if(racine.fdroit != null){
+	    //if(racine.fdroit.getFreq() < tmp.getFreq()){
+	    return racine.fdroit.maxInf(racine.fdroit,tmp);
+		//}
+		}
+	
+	
+	return racine;
+	
+    }*/
+    
     public int getFreq(){ return this.freq; }
 
     public char getChar(){ return this.c; }
@@ -28,6 +81,8 @@ public class Noeud {
 	return (this.fgauche == null && this.fdroit == null);	
     }
 
+
+    
     public void code_bin(String[] st, String s){
 	if(!this.estFeuille()){
 	    if(this.fdroit == null){
@@ -42,7 +97,7 @@ public class Noeud {
 	    st[this.c] = s;
 	}
     }
-	
+
     public StringBuffer Decodage(StringBuffer text, Noeud n){
 	StringBuffer s=new StringBuffer("");
 	Noeud actuel=n;
